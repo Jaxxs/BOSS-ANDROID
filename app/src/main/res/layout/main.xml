@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <!-- Title area -->
+
+    <!-- Read area -->
+
+    <ScrollView
+        android:id="@+id/ReadField"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="6.61">
+
+        <!-- Note: FT31xHypterTerm.java int TEXT_MAX_LINE = 1000; Here set 5000 for HEX format -->
+        <TextView
+            android:id="@+id/ReadValues"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0dip"
+            android:focusableInTouchMode="false"
+            android:gravity="left|top"
+            android:maxLines="5000"
+            android:textSize="12dp"
+            android:typeface="monospace"></TextView>
+    </ScrollView>
+
+    <!-- Write area -->
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/StatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:gravity="center"
+                android:text="Status" />
+
+            <Button
+                android:id="@+id/ClearButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="Clear" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/GasDelayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="Gas Delay" />
+
+            <EditText
+                android:id="@+id/txtGasDelay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:ems="10"
+                android:enabled="true"
+                android:hint="Gas Delay"
+                android:inputType="number" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/SparkDelayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="Spark Delay" />
+
+            <EditText
+                android:id="@+id/txtSparkDelay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Spark Delay"
+                android:inputType="number" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/IgnGapButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="Ign Gap" />
+
+            <EditText
+                android:id="@+id/txtIngGap"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:ems="10"
+                android:hint="Ignition Gap"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/FireRateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="0.60"
+                android:text="Fire Rate" />
+
+            <EditText
+                android:id="@+id/txtFireRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Fire Rate"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/MvDetectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="mV Detect" />
+
+            <EditText
+                android:id="@+id/txtMvDetect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_span="1"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="mV Detect"
+                android:inputType="number" />
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+    <!-- Setting area -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menuSettings"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dip"
+        android:layout_weight="1"
+        android:background="#505050"
+        android:tag="configure block"
+        android:visibility="gone">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/baudRate"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Baud Rate" />
+
+                <Spinner
+                    android:id="@+id/baudRateValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:focusable="false"
+                    android:gravity="center_horizontal|center"
+                    android:inputType="none" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stopBit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Stop(bit)"></TextView>
+
+                <Spinner
+                    android:id="@+id/stopBitValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:gravity="center_horizontal|center"
+                    android:inputType="none" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dataBit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Data(bit)"></TextView>
+
+                <Spinner
+                    android:id="@+id/dataBitValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:gravity="center_horizontal|center"
+                    android:inputType="none" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/parity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Parity"></TextView>
+
+                <Spinner
+                    android:id="@+id/parityValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:gravity="center_horizontal|center"
+                    android:inputType="none" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/flowControl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Flow Control"></TextView>
+
+                <Spinner
+                    android:id="@+id/flowControlValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:gravity="center"
+                    android:inputType="none" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/portSelect"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|bottom"
+                    android:text="Port"></TextView>
+
+                <Spinner
+                    android:id="@+id/portSelectValue"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#708070"
+                    android:gravity="center"
+                    android:inputType="none" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/ConfigButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_pattern"
+                android:gravity="center"
+                android:scaleType="centerInside"
+                android:text="Configure" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <!--  Key code area -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menuSpecialKey"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_margin="0dip"
+        android:tag="key code block"
+        android:visibility="gone">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <!--  special key + -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/keyCtrlC"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="0dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/button_pattern"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:text="Ctrl-C" />
+
+                <Button
+                    android:id="@+id/keyESC"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="0dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/button_pattern"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:text="ESC" />
+
+            </LinearLayout>
+            <!--   special key - -->
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
