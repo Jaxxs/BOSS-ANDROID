@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BOSS APP</string>
-    <string name="baudRate">Baud Rate Setting</string>
+    <string name="baudRate">Baud Rate</string>
     <string name="gasDelays">1</string>
     <string-array name="baud_rate_1">
         <item>300</item>
