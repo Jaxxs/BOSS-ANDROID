@@ -7,6 +7,20 @@
 
     <!-- Title area -->
 
+    <TextView
+        android:id="@+id/UartInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="1dp"
+        android:background="#505050"
+        android:gravity="left|center"
+        android:text=""
+        android:textSize="12dp"
+        android:textStyle="bold" />
+
     <!-- Read area -->
 
     <ScrollView
@@ -32,7 +46,7 @@
     <!-- Write area -->
 
     <TableLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <TableRow
@@ -64,7 +78,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_weight="1"
                 android:text="Gas Delay" />
 
             <EditText
@@ -73,7 +86,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_span="1"
-                android:layout_weight="1"
                 android:ems="10"
                 android:enabled="true"
                 android:hint="Gas Delay"
@@ -90,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:text="Spark Delay" />
+                android:text="@string/spark_duration" />
 
             <EditText
                 android:id="@+id/txtSparkDelay"
@@ -98,9 +110,8 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_span="1"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Spark Delay"
+                android:hint="@string/spark_duration"
                 android:inputType="number" />
 
         </TableRow>
@@ -135,7 +146,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_weight="0.60"
                 android:text="Fire Rate" />
 
             <EditText
@@ -144,7 +154,6 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_span="1"
-                android:layout_weight="1"
                 android:ems="10"
                 android:hint="Fire Rate"
                 android:inputType="number" />
@@ -166,8 +175,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_span="1"
-                android:layout_weight="1"
                 android:ems="10"
                 android:hint="mV Detect"
                 android:inputType="number" />

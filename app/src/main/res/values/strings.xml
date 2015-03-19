@@ -3,6 +3,7 @@
     <string name="app_name">BOSS APP</string>
     <string name="baudRate">Baud Rate</string>
     <string name="gasDelays">1</string>
+    <string name="spark_duration">Spark Duration</string>
     <string-array name="baud_rate_1">
         <item>300</item>
         <item>600</item>

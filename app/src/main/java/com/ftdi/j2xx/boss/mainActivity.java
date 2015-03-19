@@ -384,7 +384,7 @@ public class mainActivity extends Activity {
         mMenuKey = ((RelativeLayout) findViewById(R.id.menuSpecialKey));
         mMenuKey.setVisibility(View.GONE);
 
-        //uartInfo = (TextView) findViewById(R.id.UartInfo);
+        uartInfo = (TextView) findViewById(R.id.UartInfo);
         fireRateText = (TextView) findViewById(R.id.txtFireRate);
         scrollView = (ScrollView) findViewById(R.id.ReadField);
         readText = (TextView) findViewById(R.id.ReadValues);
