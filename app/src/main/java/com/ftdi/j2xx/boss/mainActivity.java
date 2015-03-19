@@ -276,7 +276,7 @@ public class mainActivity extends Activity {
     TextView fireRateText;
     TextView mvDetectText;
     TextView gasDelayText;
-    TextView ingGapText;
+    TextView ignGapText;
     TextView sparkDelayText;
     //EditText writeText;
     Spinner baudSpinner;
@@ -304,6 +304,7 @@ public class mainActivity extends Activity {
     byte[] writeBuffer;
     byte[] readBuffer;
     char[] readBufferToChar;
+    char[] readLineChar;
     int actualNumBytes;
     int baudRate; /* baud rate */
     byte stopBit; /* 1:1stop bits, 2:2 stop bits */
@@ -390,7 +391,7 @@ public class mainActivity extends Activity {
         readText = (TextView) findViewById(R.id.ReadValues);
         mvDetectText = (TextView) findViewById(R.id.txtMvDetect);
         gasDelayText = (TextView) findViewById(R.id.txtGasDelay);
-        ingGapText = (TextView) findViewById(R.id.txtIngGap);
+        ignGapText = (TextView) findViewById(R.id.txtIngGap);
         sparkDelayText = (TextView) findViewById(R.id.txtSparkDelay);
         //settingButton = (Button) findViewById(R.id.SettingButton);
         //logButton = (Button) findViewById(R.id.LogButton);
@@ -409,6 +410,7 @@ public class mainActivity extends Activity {
         writeBuffer = new byte[512];
         readBuffer = new byte[UI_READ_BUFFER_SIZE];
         readBufferToChar = new char[UI_READ_BUFFER_SIZE];
+        readLineChar = new char[UI_READ_BUFFER_SIZE];
         readDataBuffer = new byte[MAX_NUM_BYTES];
         actualNumBytes = 0;
 
@@ -525,7 +527,7 @@ public class mainActivity extends Activity {
                 if (DeviceStatus.DEV_CONFIG != checkDevice()) {
                     return;
                 }
-                String cmdAts = "at!s03=" + ingGapText.getText() + "\n";
+                String cmdAts = "at!s03=" + ignGapText.getText() + "\n";
                 int numBytes = cmdAts.length();
                 for (int i = 0; i < numBytes; i++) {
                     writeBuffer[i] = (byte) (cmdAts.charAt(i));
@@ -1129,7 +1131,7 @@ public class mainActivity extends Activity {
             }
             readText.append(strBuffer.toString());
         } else {
-            readText.setText(contentCharSequence);
+            readText.setText(contentCharSequence); //TODO: may need to turn back on
             bContentFormatHex = false;
         }
 
@@ -1153,6 +1155,7 @@ public class mainActivity extends Activity {
             bSendHexData = false;
         } else {
             readText.append(data);
+            //midToast("appendData" ,Toast.LENGTH_SHORT);
         }
 
         int overLine = readText.getLineCount() - TEXT_MAX_LINE;
@@ -1788,7 +1791,6 @@ public class mainActivity extends Activity {
                     parseOK = false;
                 }
             } else if (MODE_Y_MODEM_1K_CRC_RECEIVE == transferMode && PACTET_SIZE_XMODEM_CRC == packetSize) {
-                // TODO: should check crc; last packet, assume it is ok.
             } else if (MODE_X_MODEM_1K_CRC_RECEIVE == transferMode ||
                     MODE_Y_MODEM_1K_CRC_RECEIVE == transferMode) {
                 byte[] crcHL = calCrc(modemDataBuffer, 3, DATA_SIZE_1K);
@@ -2240,14 +2242,78 @@ public class mainActivity extends Activity {
         return j;
     }    final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
                 case UPDATE_TEXT_VIEW_CONTENT:
                     if (actualNumBytes > 0) {
                         totalUpdateDataBytes += actualNumBytes;
+                        int z = 0;
                         for (int i = 0; i < actualNumBytes; i++) {
                             readBufferToChar[i] = (char) readBuffer[i];
+                            readLineChar[z] = (char) readBuffer[i];
+                               z++;
+
+                            //GAS DELAY
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("01 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    gasDelayText.setText(tmp.substring(tmp.length()-5));
+                                    z=0;
+                                }
+                            }
+
+                            //SPARK DURATION
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("02 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    sparkDelayText.setText(tmp.substring(tmp.length()-5));
+                                    z=0;
+                                }
+                            }
+
+                            //IGNITION GAP
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("03 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    ignGapText.setText(tmp.substring(tmp.length() - 5));
+                                    z=0;
+                                }
+                            }
+
+                            //FIRE RATE
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("06 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    fireRateText.setText(tmp.substring(tmp.length() - 5));
+                                    z=0;
+                                }
+                            }
+
+                            //MV DETECT
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("07 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    mvDetectText.setText(tmp.substring(tmp.length() - 5));
+                                    z=0;
+                                }
+                            }
+
+
+
                         }
+                        readLineChar = new char[UI_READ_BUFFER_SIZE];
                         appendData(String.copyValueOf(readBufferToChar, 0, actualNumBytes));
+
                     }
                     break;
 
@@ -2403,6 +2469,7 @@ public class mainActivity extends Activity {
                     Double diffime = (double) (tempTime - start_time) / 1000;
                     temp += " in " + diffime.toString() + " seconds";
 
+                    midToast("UPDATE_ASCII_RECEIVE_DATA_BYTES" ,Toast.LENGTH_SHORT);
                     updateStatusData(temp);
                 }
                 break;
@@ -4313,20 +4380,7 @@ public class mainActivity extends Activity {
             boolean bSendFileProcess = true;
             byte[] tempBuffer = new byte[2048];
             byte[] crcHL = new byte[2];
-
-            // TODO: dynamic setting size for different baud rate?
-			/*
-			 *  256 bytes below 2400 bps, 512 at 2400 bps,
-			 *  and 1024 above 4800 bps	or when	the data link is known to be relatively error free.
-			 */
             int zmReadDataSize = 0;
-//			if(baudRate < 2400)
-//				zmReadDataSize= DATA_SIZE_256;
-//			else if(2400 == baudRate)
-//				zmReadDataSize= DATA_SIZE_512;
-//			else
-//				zmReadDataSize= DATA_SIZE_1K;
-
             zmReadDataSize = DATA_SIZE_512;
             int readcount = 0;
 
@@ -4458,10 +4512,6 @@ public class mainActivity extends Activity {
                     break;
 
                     case ZRPOS:
-                        // TODO: handle error cases
-//				    final int ZSKIP = 5;     /* To sender: skip this file */
-//				    final int ZNAK = 6;      /* Last packet was garbled */
-//				    final int ZABORT = 7;    /* Abort batch transfers */
 
                         if (true == zmWaitReadData(21, 0, 5000)) {
                             int frame = zmGetFrameType(modemDataBuffer, 0);
@@ -4766,7 +4816,6 @@ public class mainActivity extends Activity {
 
                     case ZEOF:
                     case ZRINIT:
-                        // TODO: how to set ZRINIT packet
                         DLog.e(TZR, "send ZRINIT packet...");
                         tempBuffer[0] = 0x2A;
                         tempBuffer[1] = 0x2A;
@@ -4851,7 +4900,6 @@ public class mainActivity extends Activity {
                         break;
 
                     case ZRPOS:
-                        // TODO: how to set ZRPOS packet
                         DLog.e(TZR, "state: ZRPOS, send ZRPOS packet...");
                         tempBuffer[0] = 0x2A;
                         tempBuffer[1] = 0x2A;
