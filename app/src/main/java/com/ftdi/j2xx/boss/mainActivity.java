@@ -406,6 +406,7 @@ public class mainActivity extends Activity {
         sparkDelayButton = (Button) findViewById(R.id.SparkDelayButton);
         ignGapButton = (Button) findViewById(R.id.IgnGapButton);
         clearButton = (Button) findViewById(R.id.ClearButton);
+
         /* allocate buffer */
         writeBuffer = new byte[512];
         readBuffer = new byte[UI_READ_BUFFER_SIZE];
@@ -520,6 +521,7 @@ public class mainActivity extends Activity {
                 contentCharSequence = readText.getText();
             }
         });
+
 
 // Ignition Delay +
         ignGapButton.setOnClickListener(new View.OnClickListener() {

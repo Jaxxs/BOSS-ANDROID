@@ -61,12 +61,23 @@
                 android:gravity="center"
                 android:text="Status" />
 
-            <Button
-                android:id="@+id/ClearButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_column="1"
-                android:text="Clear" />
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/ClearButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="3"
+                    android:text="Clear"
+                    android:layout_weight="0.45" />
+
+            </LinearLayout>
+
         </TableRow>
 
         <TableRow
