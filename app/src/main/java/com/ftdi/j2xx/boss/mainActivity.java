@@ -285,8 +285,10 @@ public class mainActivity extends Activity {
     Spinner paritySpinner;
     Spinner flowSpinner;
     Spinner portSpinner;
+    Spinner paraSpinner;
     ArrayAdapter<CharSequence> baudAdapter;
     ArrayAdapter<CharSequence> portAdapter;
+    ArrayAdapter<CharSequence> paraAdapter;
     Button configButton, statButton, fireRateButton;
     Button mvDetectButton, gasDelayButton, ignGapButton, sparkDelayButton, clearButton;
     Button ctrlCButton, escButton;
@@ -307,6 +309,7 @@ public class mainActivity extends Activity {
     char[] readLineChar;
     int actualNumBytes;
     int baudRate; /* baud rate */
+    String paraSeleted;
     byte stopBit; /* 1:1stop bits, 2:2 stop bits */
     byte dataBit; /* 8:8bit, 7: 7bit */
     byte parity; /* 0: none, 1: odd, 2: even, 3: mark, 4: space */
@@ -427,6 +430,18 @@ public class mainActivity extends Activity {
         baudSpinner.setAdapter(baudAdapter);
         baudSpinner.setSelection(8);
         baudRate = 115200;
+
+
+        		/* setup the baud rate list*/
+        paraSpinner = (Spinner) findViewById(R.id.ParaSpinner);
+        paraAdapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner_parameters, R.layout.my_spinner_textview);
+        paraAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
+        paraSpinner.setAdapter(paraAdapter);
+        paraSpinner.setSelection(0);
+       // paraSeleted = paraSpinner.getSelectedItem().toString();
+
+
 
 		/* stop bits */
         stopSpinner = (Spinner) findViewById(R.id.stopBitValue);

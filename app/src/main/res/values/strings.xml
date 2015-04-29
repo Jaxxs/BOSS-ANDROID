@@ -116,6 +116,19 @@
         <item>6</item>
         <item>7</item>
     </string-array>
+
+    <string-array name="spinner_parameters">
+        <item>Gas Delay</item>
+        <item>Spark Delay</item>
+        <item>Fire Rate</item>
+        <item>TriggerMV Value</item>
+        <item>Chamber Sensor</item>
+        <item>Temp Sensor</item>
+        <item>Max Chamber Temp</item>
+        <item>Min Chamber Temp</item>
+        <item>Max PCB Temp</item>
+        <item>Min PCB Temp</item>
+    </string-array>
 </resources>
 
 

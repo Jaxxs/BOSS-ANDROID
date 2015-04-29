@@ -76,6 +76,8 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int baudRate=0x7f060001;
+        public static final int gasDelays=0x7f060002;
+        public static final int spark_duration=0x7f060003;
     }
     public static final class xml {
         public static final int device_filter=0x7f040000;
