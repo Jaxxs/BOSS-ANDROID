@@ -231,6 +231,7 @@ public class mainActivity extends Activity {
     int DevCount = -1;
     int currentPortIndex = -1;
     int portIndex = -1;
+    String selectedParaCmd;
     boolean INTERNAL_DEBUG_TRACE = false; // Toast message for debug
     // menu item
     Menu myMenu;
@@ -273,11 +274,7 @@ public class mainActivity extends Activity {
     TextView contentFormatText;
     ScrollView scrollView;
     TextView readText;
-    TextView fireRateText;
-    TextView mvDetectText;
-    TextView gasDelayText;
-    TextView ignGapText;
-    TextView sparkDelayText;
+    TextView valueText;
     //EditText writeText;
     Spinner baudSpinner;
     Spinner stopSpinner;
@@ -289,8 +286,8 @@ public class mainActivity extends Activity {
     ArrayAdapter<CharSequence> baudAdapter;
     ArrayAdapter<CharSequence> portAdapter;
     ArrayAdapter<CharSequence> paraAdapter;
-    Button configButton, statButton, fireRateButton;
-    Button mvDetectButton, gasDelayButton, ignGapButton, sparkDelayButton, clearButton;
+    Button configButton, statButton;
+    Button clearButton, updateButton;
     Button ctrlCButton, escButton;
 
     boolean bSendButtonClick = false;
@@ -384,31 +381,18 @@ public class mainActivity extends Activity {
         // init UI objects
         mMenuSetting = ((RelativeLayout) findViewById(R.id.menuSettings));
         mMenuSetting.setVisibility(View.GONE);
-
         mMenuKey = ((RelativeLayout) findViewById(R.id.menuSpecialKey));
         mMenuKey.setVisibility(View.GONE);
-
         uartInfo = (TextView) findViewById(R.id.UartInfo);
-        fireRateText = (TextView) findViewById(R.id.txtFireRate);
+        valueText = (TextView) findViewById(R.id.txtValue);
         scrollView = (ScrollView) findViewById(R.id.ReadField);
         readText = (TextView) findViewById(R.id.ReadValues);
-        mvDetectText = (TextView) findViewById(R.id.txtMvDetect);
-        gasDelayText = (TextView) findViewById(R.id.txtGasDelay);
-        ignGapText = (TextView) findViewById(R.id.txtIngGap);
-        sparkDelayText = (TextView) findViewById(R.id.txtSparkDelay);
-        //settingButton = (Button) findViewById(R.id.SettingButton);
-        //logButton = (Button) findViewById(R.id.LogButton);
-        //sendButton = (Button) findViewById(R.id.SendButton);
         configButton = (Button) findViewById(R.id.ConfigButton);
-        fireRateButton = (Button) findViewById(R.id.FireRateButton);
-        statButton = (Button) findViewById(R.id.StatButton);
-        mvDetectButton = (Button) findViewById(R.id.MvDetectButton);
+        statButton = (Button) findViewById(R.id.btnStatus);
         ctrlCButton = (Button) findViewById(R.id.keyCtrlC);
         escButton = (Button) findViewById(R.id.keyESC);
-        gasDelayButton = (Button) findViewById(R.id.GasDelayButton);
-        sparkDelayButton = (Button) findViewById(R.id.SparkDelayButton);
-        ignGapButton = (Button) findViewById(R.id.IgnGapButton);
-        clearButton = (Button) findViewById(R.id.ClearButton);
+        clearButton = (Button) findViewById(R.id.btnClear);
+        updateButton = (Button) findViewById(R.id.btnUpdate);
 
         /* allocate buffer */
         writeBuffer = new byte[512];
@@ -491,7 +475,7 @@ public class mainActivity extends Activity {
         paritySpinner.setOnItemSelectedListener(new MyOnParitySelectedListener());
         flowSpinner.setOnItemSelectedListener(new MyOnFlowSelectedListener());
         portSpinner.setOnItemSelectedListener(new MyOnPortSelectedListener());
-
+        paraSpinner.setOnItemSelectedListener(new MyOnParaSelectedListener());
 
         configButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -537,78 +521,13 @@ public class mainActivity extends Activity {
             }
         });
 
-
-// Ignition Delay +
-        ignGapButton.setOnClickListener(new View.OnClickListener() {
+// Update button +
+        updateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (DeviceStatus.DEV_CONFIG != checkDevice()) {
                     return;
                 }
-                String cmdAts = "at!s03=" + ignGapText.getText() + "\n";
-                int numBytes = cmdAts.length();
-                for (int i = 0; i < numBytes; i++) {
-                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
-                }
-                sendData(numBytes, writeBuffer);
-            }
-        });
-
-
-// Spark Delay +
-        sparkDelayButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
-                    return;
-                }
-                String cmdAts = "at!s02=" + sparkDelayText.getText() + "\n";
-                int numBytes = cmdAts.length();
-                for (int i = 0; i < numBytes; i++) {
-                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
-                }
-                sendData(numBytes, writeBuffer);
-            }
-        });
-
-
-// Gas Delay +
-        gasDelayButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
-                    return;
-                }
-                String cmdAts = "at!s01=" + gasDelayText.getText() + "\n";
-                int numBytes = cmdAts.length();
-                for (int i = 0; i < numBytes; i++) {
-                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
-                }
-                sendData(numBytes, writeBuffer);
-            }
-        });
-
-
-// Voltage Detect +
-        mvDetectButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
-                    return;
-                }
-                String cmdAts = "at!s07=" + mvDetectText.getText() + "\n";
-                int numBytes = cmdAts.length();
-                for (int i = 0; i < numBytes; i++) {
-                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
-                }
-                sendData(numBytes, writeBuffer);
-            }
-
-        });
-
-// Fire button +
-        fireRateButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
-                    return;
-                }
-                String cmdAts = "at!s06=" + fireRateText.getText() + "\n";
+                String cmdAts = selectedParaCmd + valueText.getText() + "\n";
                 int numBytes = cmdAts.length();
                 for (int i = 0; i < numBytes; i++) {
                     writeBuffer[i] = (byte) (cmdAts.charAt(i));
@@ -2270,60 +2189,16 @@ public class mainActivity extends Activity {
                             readLineChar[z] = (char) readBuffer[i];
                                z++;
 
-                            //GAS DELAY
-                            if ( readBufferToChar[i] == '\r' ){
-                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
-                                tmp=tmp.trim();
-                                if (tmp.contains("01 ")){
-                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
-                                    gasDelayText.setText(tmp.substring(tmp.length()-5));
-                                    z=0;
-                                }
-                            }
-
-                            //SPARK DURATION
-                            if ( readBufferToChar[i] == '\r' ){
-                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
-                                tmp=tmp.trim();
-                                if (tmp.contains("02 ")){
-                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
-                                    sparkDelayText.setText(tmp.substring(tmp.length()-5));
-                                    z=0;
-                                }
-                            }
-
-                            //IGNITION GAP
-                            if ( readBufferToChar[i] == '\r' ){
-                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
-                                tmp=tmp.trim();
-                                if (tmp.contains("03 ")){
-                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
-                                    ignGapText.setText(tmp.substring(tmp.length() - 5));
-                                    z=0;
-                                }
-                            }
-
-                            //FIRE RATE
-                            if ( readBufferToChar[i] == '\r' ){
-                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
-                                tmp=tmp.trim();
-                                if (tmp.contains("06 ")){
-                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
-                                    fireRateText.setText(tmp.substring(tmp.length() - 5));
-                                    z=0;
-                                }
-                            }
-
-                            //MV DETECT
-                            if ( readBufferToChar[i] == '\r' ){
-                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
-                                tmp=tmp.trim();
-                                if (tmp.contains("07 ")){
-                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
-                                    mvDetectText.setText(tmp.substring(tmp.length() - 5));
-                                    z=0;
-                                }
-                            }
+//                            //GAS DELAY
+//                            if ( readBufferToChar[i] == '\r' ){
+//                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+//                                tmp=tmp.trim();
+//                                if (tmp.contains("01 ")){
+//                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+//                                    gasDelayText.setText(tmp.substring(tmp.length()-5));
+//                                    z=0;
+//                                }
+//                            }
 
 
 
@@ -3063,6 +2938,35 @@ public class mainActivity extends Activity {
         }
     }
 
+    public class MyOnParaSelectedListener implements OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            String flowString = new String(parent.getItemAtPosition(pos).toString());
+            if (flowString.compareTo("Gas Delay") == 0) {
+                selectedParaCmd = "at!s01=";
+            } else if (flowString.compareTo("Spark Delay") == 0) {
+                selectedParaCmd = "at!s02=";
+            } else if (flowString.compareTo("Fire Rate") == 0) {
+                selectedParaCmd = "at!s06=";
+            } else if (flowString.compareTo("TriggerMV Value") == 0) {
+                selectedParaCmd = "at!s07=";
+            } else if (flowString.compareTo("Chamber Sensor") == 0) {
+                selectedParaCmd = "at!s12=";
+            } else if (flowString.compareTo("Temp Sensor") == 0) {
+                selectedParaCmd = "at!s13=";
+            } else if (flowString.compareTo("Max Chamber Temp") == 0) {
+                selectedParaCmd = "at!s11=";
+            } else if (flowString.compareTo("Min Chamber Temp") == 0) {
+                selectedParaCmd = "at!s10=";
+            } else if (flowString.compareTo("Max PCB Temp") == 0) {
+                selectedParaCmd = "at!s09=";
+            } else if (flowString.compareTo("Min PCB Temp") == 0) {
+                selectedParaCmd = "at!s08=";
+            }
+        }
+
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
     class ResetBackButtonThread extends Thread {
         public void run() {
             try {
