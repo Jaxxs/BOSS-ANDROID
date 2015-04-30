@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 14
-    buildToolsVersion '21.1.1'
+    compileSdkVersion 13
+    buildToolsVersion '21.1.2'
     defaultConfig {
         applicationId 'com.boss.bltech'
-        minSdkVersion 12
-        targetSdkVersion 14
+        minSdkVersion 8
+        targetSdkVersion 13
     }
     buildTypes {
         release {

@@ -2,6 +2,13 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Mark\git\BOSS-ANDROID\app\libs\d2xx.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="549d88cce99830dc2ae951a13d5a8b897362351b">
+        <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\d2xx-1b9c999c5a1336f32f4bd38fa4e4211993b72983.jar" />
+    </item>
+    <item
         jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
         jumboMode="false"
         revision="21.1.1"
@@ -9,9 +16,30 @@
         <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-099cbd6d114024195b193012e6d1c6258ad44672.jar" />
     </item>
     <item
+        jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="44ec51e9d395a47aab135e5e1b556c0007442156">
+        <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-099cbd6d114024195b193012e6d1c6258ad44672.jar" />
+    </item>
+    <item
+        jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="44ec51e9d395a47aab135e5e1b556c0007442156">
+        <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-099cbd6d114024195b193012e6d1c6258ad44672.jar" />
+    </item>
+    <item
         jar="C:\Users\Mark\git\BOSS-ANDROID\app\libs\d2xx.jar"
         jumboMode="false"
         revision="21.1.1"
+        sha1="549d88cce99830dc2ae951a13d5a8b897362351b">
+        <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\d2xx-1b9c999c5a1336f32f4bd38fa4e4211993b72983.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\git\BOSS-ANDROID\app\libs\d2xx.jar"
+        jumboMode="false"
+        revision="19.1.0"
         sha1="549d88cce99830dc2ae951a13d5a8b897362351b">
         <dex dex="C:\Users\Mark\git\BOSS-ANDROID\app\build\intermediates\pre-dexed\debug\d2xx-1b9c999c5a1336f32f4bd38fa4e4211993b72983.jar" />
     </item>

@@ -119,6 +119,7 @@
 
     <string-array name="spinner_parameters">
         <item>Gas Delay</item>
+        <item>Spark Duration</item>
         <item>Spark Delay</item>
         <item>Fire Rate</item>
         <item>TriggerMV Value</item>

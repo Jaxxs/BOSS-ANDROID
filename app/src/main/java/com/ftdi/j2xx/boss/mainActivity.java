@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -289,6 +290,7 @@ public class mainActivity extends Activity {
     Button configButton, statButton;
     Button clearButton, updateButton;
     Button ctrlCButton, escButton;
+    CheckBox chamberSensorCheckbox,pcbSensorCheckbox;
 
     boolean bSendButtonClick = false;
     boolean bLogButtonClick = false;
@@ -393,6 +395,8 @@ public class mainActivity extends Activity {
         escButton = (Button) findViewById(R.id.keyESC);
         clearButton = (Button) findViewById(R.id.btnClear);
         updateButton = (Button) findViewById(R.id.btnUpdate);
+        chamberSensorCheckbox =(CheckBox) findViewById(R.id.chkChamberSensor);
+        pcbSensorCheckbox =(CheckBox) findViewById(R.id.chkPcbSensor);
 
         /* allocate buffer */
         writeBuffer = new byte[512];
@@ -417,7 +421,7 @@ public class mainActivity extends Activity {
 
 
         		/* setup the baud rate list*/
-        paraSpinner = (Spinner) findViewById(R.id.ParaSpinner);
+        paraSpinner = (Spinner) findViewById(R.id.spnParameters);
         paraAdapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner_parameters, R.layout.my_spinner_textview);
         paraAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
@@ -528,6 +532,59 @@ public class mainActivity extends Activity {
                     return;
                 }
                 String cmdAts = selectedParaCmd + valueText.getText() + "\n";
+                int numBytes = cmdAts.length();
+                for (int i = 0; i < numBytes; i++) {
+                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
+                }
+                sendData(numBytes, writeBuffer);
+            }
+
+        });
+
+
+        // Chamber button +
+        chamberSensorCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String cmdAts = "";
+
+                if ( chamberSensorCheckbox.isChecked()){
+                    cmdAts   = "at!s12=00001\n";
+                }else {
+                    cmdAts = "at!s12=00000\n";
+                }
+
+               //midToast( cmdAts, Toast.LENGTH_LONG);
+                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
+                    chamberSensorCheckbox.setChecked(false);
+                    return;
+                }
+
+                int numBytes = cmdAts.length();
+                for (int i = 0; i < numBytes; i++) {
+                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
+                }
+                sendData(numBytes, writeBuffer);
+            }
+
+        });
+
+        // PCB Temp button +
+        pcbSensorCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String cmdAts = "";
+
+                if ( pcbSensorCheckbox.isChecked()){
+                    cmdAts   = "at!s13=00001\n";
+                }else {
+                    cmdAts = "at!s13=00000\n";
+                }
+
+                //midToast( cmdAts, Toast.LENGTH_LONG);
+                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
+                    pcbSensorCheckbox.setChecked(false);
+                    return;
+                }
+
                 int numBytes = cmdAts.length();
                 for (int i = 0; i < numBytes; i++) {
                     writeBuffer[i] = (byte) (cmdAts.charAt(i));
@@ -2199,8 +2256,41 @@ public class mainActivity extends Activity {
 //                                    z=0;
 //                                }
 //                            }
+//
+//
+//                          Auto populate chamber checkbox
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("12 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    int val = new Integer (tmp.substring(tmp.length()-5));
+                                        if (val == 1){
+                                        chamberSensorCheckbox.setChecked(true);
+                                    }else{
+                                        chamberSensorCheckbox.setChecked(false);
+                                    }
 
+                                    z=0;
+                                }
+                            }
 
+//                          Auto populate pcb checkbox
+                            if ( readBufferToChar[i] == '\r' ){
+                                String tmp = String.copyValueOf(readLineChar, 0, readLineChar.length);
+                                tmp=tmp.trim();
+                                if (tmp.contains("13 ")){
+                                    readLineChar = new char[UI_READ_BUFFER_SIZE];
+                                    int val = new Integer (tmp.substring(tmp.length()-5));
+                                    if (val == 1){
+                                        pcbSensorCheckbox.setChecked(true);
+                                    }else{
+                                        pcbSensorCheckbox.setChecked(false);
+                                    }
+
+                                    z=0;
+                                }
+                            }
 
                         }
                         readLineChar = new char[UI_READ_BUFFER_SIZE];
@@ -2943,8 +3033,10 @@ public class mainActivity extends Activity {
             String flowString = new String(parent.getItemAtPosition(pos).toString());
             if (flowString.compareTo("Gas Delay") == 0) {
                 selectedParaCmd = "at!s01=";
-            } else if (flowString.compareTo("Spark Delay") == 0) {
+            } else if (flowString.compareTo("Spark Duration") == 0) {
                 selectedParaCmd = "at!s02=";
+            } else if (flowString.compareTo("Spark Delay") == 0) {
+                selectedParaCmd = "at!s03=";
             } else if (flowString.compareTo("Fire Rate") == 0) {
                 selectedParaCmd = "at!s06=";
             } else if (flowString.compareTo("TriggerMV Value") == 0) {
