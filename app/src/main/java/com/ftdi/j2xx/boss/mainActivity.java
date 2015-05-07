@@ -53,7 +53,6 @@ public class mainActivity extends Activity {
     static RelativeLayout mMenuKey;
     final int MENU_CONTENT_FORMAT = Menu.FIRST;
     final int MENU_FONT_SIZE = Menu.FIRST + 1;
-    final int MENU_SAVE_CONTENT_DATA = Menu.FIRST + 2;
     final int MENU_CLEAN_SCREEN = Menu.FIRST + 3;
     final int MENU_ECHO = Menu.FIRST + 4;
     final int MENU_HELP = Menu.FIRST + 5;
@@ -97,7 +96,7 @@ public class mainActivity extends Activity {
     final byte XON = 0x11;    /* Resume transmission */
     final byte XOFF = 0x13;    /* Pause transmission */
     // strings of file transfer protocols
-    final String[] protocolItems = {"ASCII", "XModem-CheckSum", "XModem-CRC", "XModem-1KCRC", "YModem", "ZModem"};
+
     final int MODE_GENERAL_UART = 0;
     int transferMode = MODE_GENERAL_UART;
     int tempTransferMode = MODE_GENERAL_UART;
@@ -271,7 +270,7 @@ public class mainActivity extends Activity {
     HandlerThread handlerThread; // update data to UI
     ReadThread readThread; // read data from USB
     // graphical objects
-    TextView uartInfo;
+    //TextView uartInfo;
     TextView contentFormatText;
     ScrollView scrollView;
     TextView readText;
@@ -290,7 +289,7 @@ public class mainActivity extends Activity {
     Button configButton, statButton;
     Button clearButton, updateButton;
     Button ctrlCButton, escButton;
-    CheckBox chamberSensorCheckbox,pcbSensorCheckbox;
+    CheckBox chamberSensorCheckbox,pcbSensorCheckbox,debugCheckbox;
 
     boolean bSendButtonClick = false;
     boolean bLogButtonClick = false;
@@ -385,7 +384,7 @@ public class mainActivity extends Activity {
         mMenuSetting.setVisibility(View.GONE);
         mMenuKey = ((RelativeLayout) findViewById(R.id.menuSpecialKey));
         mMenuKey.setVisibility(View.GONE);
-        uartInfo = (TextView) findViewById(R.id.UartInfo);
+        //uartInfo = (TextView) findViewById(R.id.UartInfo);
         valueText = (TextView) findViewById(R.id.txtValue);
         scrollView = (ScrollView) findViewById(R.id.ReadField);
         readText = (TextView) findViewById(R.id.ReadValues);
@@ -397,6 +396,7 @@ public class mainActivity extends Activity {
         updateButton = (Button) findViewById(R.id.btnUpdate);
         chamberSensorCheckbox =(CheckBox) findViewById(R.id.chkChamberSensor);
         pcbSensorCheckbox =(CheckBox) findViewById(R.id.chkPcbSensor);
+       debugCheckbox =(CheckBox) findViewById(R.id.chkDebug);
 
         /* allocate buffer */
         writeBuffer = new byte[512];
@@ -582,6 +582,32 @@ public class mainActivity extends Activity {
                 //midToast( cmdAts, Toast.LENGTH_LONG);
                 if (DeviceStatus.DEV_CONFIG != checkDevice()) {
                     pcbSensorCheckbox.setChecked(false);
+                    return;
+                }
+
+                int numBytes = cmdAts.length();
+                for (int i = 0; i < numBytes; i++) {
+                    writeBuffer[i] = (byte) (cmdAts.charAt(i));
+                }
+                sendData(numBytes, writeBuffer);
+            }
+
+        });
+
+        // Debug button +
+        debugCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String cmdAts = "";
+
+                if ( debugCheckbox.isChecked()){
+                    cmdAts   = "at!d=1\n";
+                }else {
+                    cmdAts = "at!d=0\n";
+                }
+
+                //midToast( cmdAts, Toast.LENGTH_LONG);
+                if (DeviceStatus.DEV_CONFIG != checkDevice()) {
+                    debugCheckbox.setChecked(false);
                     return;
                 }
 
@@ -1641,7 +1667,7 @@ public class mainActivity extends Activity {
     void resetStatusData() {
         String tempStr = "Format - " + (bContentFormatHex ? "Hexadecimal" : "Character") + "\n" + uartSettings;
         String tmp = tempStr.replace("\\n", "\n");
-        uartInfo.setText(tmp);
+       // uartInfo.setText(tmp);
     }
 
     void updateStatusData(String str) {
@@ -1652,7 +1678,7 @@ public class mainActivity extends Activity {
             temp = fileNameInfo + "\n" + str;
 
         String tmp = temp.replace("\\n", "\n");
-        uartInfo.setText(tmp);
+       // uartInfo.setText(tmp);
     }
 
     void setProtocolMode() {

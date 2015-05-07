@@ -7,20 +7,6 @@
 
     <!-- Title area -->
 
-    <TextView
-        android:id="@+id/UartInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="1dp"
-        android:background="#505050"
-        android:gravity="left|center"
-        android:text=""
-        android:textSize="12dp"
-        android:textStyle="bold" />
-
     <!-- Read area -->
 
     <ScrollView
@@ -90,7 +76,7 @@
 
                 <Spinner
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:id="@+id/spnParameters"
                     android:spinnerMode="dropdown"
                     android:layout_weight="1" />
@@ -99,15 +85,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtValue"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.5" />
 
                 <Button
                     android:id="@+id/btnUpdate"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2"
-                    android:text="Update"
-                    android:layout_weight="1" />
+                    android:text="Update" />
 
             </LinearLayout>
 
@@ -124,18 +109,30 @@
                 android:layout_height="match_parent">
 
                 <CheckBox
-                    android:layout_width="196dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chamber Sensor"
-                    android:id="@+id/chkChamberSensor" />
+                    android:id="@+id/chkChamberSensor"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1" />
 
                 <CheckBox
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PCB Sensor"
                     android:id="@+id/chkPcbSensor"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Debug"
+                    android:id="@+id/chkDebug"
+                    android:layout_column="1"
                     android:layout_weight="1" />
             </LinearLayout>
+
         </TableRow>
 
     </TableLayout>
